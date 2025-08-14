@@ -1,0 +1,35 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.bliaik.highlightwithrules.HighlightWithRules</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
+    <name>HighlightWithRules</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor url="https://www.bliaik.com">Bli_AIk</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
+    <description><![CDATA[
+    <strong>HighlightWithRules</strong> enables customizable JSON highlighting through user-defined rules, simplifying the visualization of structured data. It supports matching keys, values, and applying tailored styles to highlight meaningful content patterns.<br>
+    <ul>
+        <li>Define rules using JSON: match specific keys or values and assign highlight colors or styles.</li>
+        <li>Enable context-aware highlighting to emphasize custom structures or flags in data.</li>
+        <li>Future support planned for additional markup and programming languages.</li>
+    </ul>
+    <p>Enhance readability and clarity in complex JSON files with precise visual cues.</p>
+    ]]></description>
+
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+</idea-plugin>
