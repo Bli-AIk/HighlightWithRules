@@ -31,11 +31,8 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="JSON File"
-                  implementationClass="com.bliaik.highlightwithrules.JsonFileType"
-                  fieldName="INSTANCE"
-                  language="JSON"
-                  extensions="json"/>
+        <annotator language="JSON" implementationClass="com.bliaik.highlightwithrules.JsonAnnotator"/>
     </extensions>
+
 
 </idea-plugin>
