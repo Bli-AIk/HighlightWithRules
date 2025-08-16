@@ -93,4 +93,4 @@ Enjoy ✨
 
 > AI 太好用了你们知道吗.png
 
-<abbr title="哦对了">I use arch btw</abbr>
+~~I use arch btw~~
