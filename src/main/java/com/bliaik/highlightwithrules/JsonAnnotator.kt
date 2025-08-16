@@ -15,7 +15,6 @@ class JsonAnnotator : Annotator {
     private val LOG = Logger.getInstance(JsonAnnotator::class.java)
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        // 处理 index 属性：只在 index 自身范围做注解（不会越界）
         if (element is JsonProperty && element.name == "index") {
             val indexValueElement = element.value
             if (indexValueElement is JsonNumberLiteral) {
@@ -29,40 +28,46 @@ class JsonAnnotator : Annotator {
             return
         }
 
-        // 处理字符串文字：如果这是 "text" 的值，则查找同级 config 中的 index 并在该字符串内做下划线
         if (element is JsonStringLiteral) {
-            // 确保它是名为 "text" 的 property 的值
             val parentProp = element.parent as? JsonProperty
-            if (parentProp?.name == "text") {
+            if (parentProp?.name == "text" && parentProp.value == element) {
                 applyUnderlinesForStringLiteral(element, holder)
             }
         }
     }
 
     private fun applyIndexLineHighlight(indexProperty: JsonProperty, index: Int, holder: AnnotationHolder) {
-        val key = getColorKeyForIndex(index) ?: return
+        val keyAttr = getColorKeyForIndex(index)
+        val valueAttr = getColorKeyForIndex(index)
 
-        holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
-            .range(indexProperty.textRange)
-            .textAttributes(key)
-            .create()
+        indexProperty.value?.let { valueElement ->
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                .range(valueElement.textRange)
+                .textAttributes(valueAttr)
+                .create()
+        }
+
+        indexProperty.nameElement.let { nameEl ->
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                .range(nameEl.textRange)
+                .textAttributes(keyAttr)
+                .create()
+        }
+
     }
 
+
     /**
-     * 在 text 字符串内部为所有由同级 config 指定的 index 加下划线
+     * Underline all indexes specified by simultaneous config inside the text string
      */
     private fun applyUnderlinesForStringLiteral(textValue: JsonStringLiteral, holder: AnnotationHolder) {
-        // 找到包含 text property 的对象（例如 { "text": "...", "config": [ {...}, {...} ] }）
         val containingObject = (textValue.parent as? JsonProperty)?.parent as? JsonObject ?: return
-
-        // 找到同级的 config 数组
         val configProp = containingObject.findProperty("config") ?: return
         val configArray = configProp.value as? JsonArray ?: return
 
         val rawText = textValue.text
         if (rawText.length < 2) return
 
-        // 遍历 config 数组里的对象，取出 index 并标注
         for (element in configArray.valueList) {
             val obj = element as? JsonObject ?: continue
             val idxProp = obj.findProperty("index") ?: continue
@@ -76,9 +81,8 @@ class JsonAnnotator : Annotator {
             val offsetInFile = mapDecodedIndexToOffset(textValue, indexInt)
             if (offsetInFile != null) {
                 val underlineRange = TextRange(offsetInFile, offsetInFile + 1)
-                val colorKey = getColorKeyForIndex(indexInt) ?: continue
+                val colorKey = getColorKeyForIndex(indexInt)
 
-                // 这里我们正在 annotate 的 element 是 textValue（字符串文字），范围属于它，所以合法
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .range(underlineRange)
                     .textAttributes(colorKey)
@@ -90,15 +94,16 @@ class JsonAnnotator : Annotator {
     }
 
     /**
-     * 将基于“解析后字符串的第 n 个字符”（从 1 开始）的索引映射到源码偏移（返回在文件中的绝对偏移）
-     * 简单处理常见转义：\\, \", \n, \t, \r, \b, \f, \uXXXX
+     * Map indexes based on "nth character of parsed string" (starting from 1)
+     * to source code offset (returns absolute offset in file)
+     * Simple processing of common escapes: \\, \", \n, \t, \r, \b, \f, \uXXXX
      */
     private fun mapDecodedIndexToOffset(textValue: JsonStringLiteral, charIndex: Int): Int? {
-        val raw = textValue.text // 包含引号，如: "\"Hello\\nworld\""
+        val raw = textValue.text
         if (raw.length < 2) return null
 
         var decodedCount = 0
-        var i = 1 // 从第一个引号后的字符开始（raw 的索引）
+        var i = 1
         val last = raw.length - 1
 
         while (i < last) {
@@ -106,7 +111,7 @@ class JsonAnnotator : Annotator {
             if (c == '\\' && i + 1 < last) {
                 val next = raw[i + 1]
                 if (next == 'u' && i + 5 < last) {
-                    // \uXXXX -> 共 6 个源码字符，算作 1 个逻辑字符
+                    // \uXXXX -> A total of 6 source characters, counted as 1 logical character
                     decodedCount++
                     if (decodedCount == charIndex) {
                         return textValue.textOffset + i
@@ -114,7 +119,8 @@ class JsonAnnotator : Annotator {
                     i += 6
                     continue
                 } else {
-                    // 普通转义，如 \n, \", \\ 等，源码占 2 个字符，算作 1 个逻辑字符
+                    // Ordinary escapes, such as \n, \", \\, etc.
+                    // The source code occupies 2 characters, which is counted as 1 logical character.
                     decodedCount++
                     if (decodedCount == charIndex) {
                         return textValue.textOffset + i
@@ -123,7 +129,7 @@ class JsonAnnotator : Annotator {
                     continue
                 }
             } else {
-                // 常规字符
+                // Regular characters
                 decodedCount++
                 if (decodedCount == charIndex) {
                     return textValue.textOffset + i
@@ -132,7 +138,7 @@ class JsonAnnotator : Annotator {
             }
         }
 
-        // 超出范围
+        // Out of range
         return null
     }
 
