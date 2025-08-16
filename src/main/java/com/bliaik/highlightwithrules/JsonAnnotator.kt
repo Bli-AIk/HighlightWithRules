@@ -8,6 +8,8 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
+
 
 class JsonAnnotator : Annotator {
     private val LOG = Logger.getInstance(JsonAnnotator::class.java)
@@ -134,12 +136,10 @@ class JsonAnnotator : Annotator {
         return null
     }
 
-    private fun getColorKeyForIndex(index: Int): TextAttributesKey? {
-        return when (index) {
-            1 -> JsonSyntaxHighlighter.INDEX_1_KEY
-            2 -> JsonSyntaxHighlighter.INDEX_2_KEY
-            3 -> JsonSyntaxHighlighter.INDEX_3_KEY
-            else -> null
-        }
+    private fun getColorKeyForIndex(index: Int): TextAttributesKey {
+        return TextAttributesKey.createTextAttributesKey(
+            "JSON.DEMO",
+            DefaultLanguageHighlighterColors.KEYWORD
+        )
     }
 }
