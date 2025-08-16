@@ -1,37 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scheme name="HWR Default" version="142" parent_scheme="Default">
-    <attributes>
-        <option name="HWR.JSON.INDEX_1">
-            <value>
-                <option name="FOREGROUND" value="e8ba36" /> </value>
-        </option>
+<?xml version="1.0"?>
+<list>
+    <option name="HWR.JSON.INDEX_1">
+        <value>
+            <option name="FOREGROUND" value="E8BA36"/>
+        </value>
+    </option>
 
-        <option name="HWR.JSON.INDEX_2">
-            <value>
-                <option name="FOREGROUND" value="ff00ff" /> <option name="FONT_TYPE" value="3" /> </value>
-        </option>
+    <option name="HWR.JSON.INDEX_2">
+        <value>
+            <option name="FOREGROUND" value="FF00FF"/>
+        </value>
+    </option>
 
-        <option name="HWR.JSON.INDEX_3">
-            <value>
-                <option name="FOREGROUND" value="359ff4" /> <option name="FONT_TYPE" value="3" /> </value>
-        </option>
+    <option name="HWR.JSON.INDEX_3">
+        <value>
+            <option name="FOREGROUND" value="359FF4"/>
+        </value>
+    </option>
 
-        <option name="HWR.JSON.UNDERLINE_INDEX_1">
-            <value>
-                <option name="EFFECT_COLOR" value="e8ba36" /> <option name="EFFECT_TYPE" value="1" /> </value>
-        </option>
+    <option name="HWR.JSON.UNDERLINE_INDEX_1">
+        <value>
+            <option name="EFFECT_COLOR" value="E8BA36"/>
+            <option name="EFFECT_TYPE" value="1"/>
+        </value>
+    </option>
 
-        <option name="HWR.JSON.UNDERLINE_INDEX_2">
-            <value>
-                <option name="EFFECT_COLOR" value="ff00ff" /> <option name="EFFECT_TYPE" value="2" />
-            </value>
-        </option>
+    <option name="HWR.JSON.UNDERLINE_INDEX_2">
+        <value>
+            <option name="EFFECT_COLOR" value="FF00FF"/>
+            <option name="EFFECT_TYPE" value="1"/>
+        </value>
+    </option>
 
-        <option name="HWR.JSON.UNDERLINE_INDEX_3">
-            <value>
-                <option name="EFFECT_COLOR" value="359ff4" /> <option name="EFFECT_TYPE" value="2" />
-            </value>
-        </option>
-
-    </attributes>
-</scheme>
+    <option name="HWR.JSON.UNDERLINE_INDEX_3">
+        <value>
+            <option name="EFFECT_COLOR" value="359FF4"/>
+            <option name="EFFECT_TYPE" value="1"/>
+        </value>
+    </option>
+</list>

@@ -33,7 +33,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <annotator language="JSON" implementationClass="com.bliaik.highlightwithrules.JsonAnnotator"/>
         <colorSettingsPage implementation="com.bliaik.highlightwithrules.colors.HWRColorSettingsPage"/>
-        <bundledColorScheme path="colors/"/>
+        <additionalTextAttributes scheme="Default" file="colors/Scheme.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colors/Scheme.xml"/>
     </extensions>
 
 
