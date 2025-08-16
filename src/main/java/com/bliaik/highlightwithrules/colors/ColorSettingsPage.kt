@@ -13,9 +13,9 @@ class HWRColorSettingsPage : ColorSettingsPage {
         AttributesDescriptor("Index 1", ColorKeys.INDEX_1),
         AttributesDescriptor("Index 2", ColorKeys.INDEX_2),
         AttributesDescriptor("Index 3", ColorKeys.INDEX_3),
-        AttributesDescriptor("Underline Index 1", ColorKeys.UNDERLINEINDEX_1),
-        AttributesDescriptor("Underline Index 2", ColorKeys.UNDERLINEINDEX_2),
-        AttributesDescriptor("Underline Index 3", ColorKeys.UNDERLINEINDEX_3)
+        AttributesDescriptor("Underline Index 1", ColorKeys.UNDERLINE_INDEX_1),
+        AttributesDescriptor("Underline Index 2", ColorKeys.UNDERLINE_INDEX_2),
+        AttributesDescriptor("Underline Index 3", ColorKeys.UNDERLINE_INDEX_3)
     )
 
     override fun getDisplayName(): String = "HWR JSON"

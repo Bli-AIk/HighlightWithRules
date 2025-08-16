@@ -33,6 +33,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <annotator language="JSON" implementationClass="com.bliaik.highlightwithrules.JsonAnnotator"/>
         <colorSettingsPage implementation="com.bliaik.highlightwithrules.colors.HWRColorSettingsPage"/>
+        <bundledColorScheme path="colors/"/>
     </extensions>
 
 

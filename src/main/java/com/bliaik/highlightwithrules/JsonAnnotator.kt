@@ -153,9 +153,9 @@ class JsonAnnotator : Annotator {
             }
         } else {
             when (cyclicalIndex) {
-                1 -> ColorKeys.UNDERLINEINDEX_1
-                2 -> ColorKeys.UNDERLINEINDEX_2
-                3 -> ColorKeys.UNDERLINEINDEX_3
+                1 -> ColorKeys.UNDERLINE_INDEX_1
+                2 -> ColorKeys.UNDERLINE_INDEX_2
+                3 -> ColorKeys.UNDERLINE_INDEX_3
                 else -> ColorKeys.INDEX
             }
         }
