@@ -32,6 +32,7 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <annotator language="JSON" implementationClass="com.bliaik.highlightwithrules.JsonAnnotator"/>
+        <colorSettingsPage implementation="com.bliaik.highlightwithrules.colors.HWRColorSettingsPage"/>
     </extensions>
 
 

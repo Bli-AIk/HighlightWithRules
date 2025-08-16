@@ -1,5 +1,6 @@
 package com.bliaik.highlightwithrules
 
+import com.bliaik.highlightwithrules.colors.ColorKeys
 import com.intellij.json.psi.*
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
@@ -8,7 +9,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 
 
 class JsonAnnotator : Annotator {
@@ -37,8 +37,8 @@ class JsonAnnotator : Annotator {
     }
 
     private fun applyIndexLineHighlight(indexProperty: JsonProperty, index: Int, holder: AnnotationHolder) {
-        val keyAttr = getColorKeyForIndex(index)
-        val valueAttr = getColorKeyForIndex(index)
+        val keyAttr = getColorKeyForIndex(index, false)
+        val valueAttr = getColorKeyForIndex(index, false)
 
         indexProperty.value?.let { valueElement ->
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
@@ -81,7 +81,7 @@ class JsonAnnotator : Annotator {
             val offsetInFile = mapDecodedIndexToOffset(textValue, indexInt)
             if (offsetInFile != null) {
                 val underlineRange = TextRange(offsetInFile, offsetInFile + 1)
-                val colorKey = getColorKeyForIndex(indexInt)
+                val colorKey = getColorKeyForIndex(indexInt, true)
 
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .range(underlineRange)
@@ -142,10 +142,22 @@ class JsonAnnotator : Annotator {
         return null
     }
 
-    private fun getColorKeyForIndex(index: Int): TextAttributesKey {
-        return TextAttributesKey.createTextAttributesKey(
-            "JSON.DEMO",
-            DefaultLanguageHighlighterColors.KEYWORD
-        )
+    private fun getColorKeyForIndex(index: Int,underline: Boolean): TextAttributesKey {
+        val cyclicalIndex = (index - 1) % 3 + 1
+        return if (!underline) {
+            when (cyclicalIndex) {
+                1 -> ColorKeys.INDEX_1
+                2 -> ColorKeys.INDEX_2
+                3 -> ColorKeys.INDEX_3
+                else -> ColorKeys.INDEX
+            }
+        } else {
+            when (cyclicalIndex) {
+                1 -> ColorKeys.UNDERLINEINDEX_1
+                2 -> ColorKeys.UNDERLINEINDEX_2
+                3 -> ColorKeys.UNDERLINEINDEX_3
+                else -> ColorKeys.INDEX
+            }
+        }
     }
 }
