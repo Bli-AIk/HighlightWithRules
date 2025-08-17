@@ -9,9 +9,9 @@ object ColorKeys {
         DefaultLanguageHighlighterColors.NUMBER
     )
 
-    val INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_1", INDEX)
-    val INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_2", INDEX)
-    val INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_3", INDEX)
+    val INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_1", DefaultLanguageHighlighterColors.KEYWORD)
+    val INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_2",  DefaultLanguageHighlighterColors.STRING)
+    val INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_3", DefaultLanguageHighlighterColors.LABEL)
     val UNDERLINE_INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_1", INDEX_1)
     val UNDERLINE_INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_2", INDEX_2)
     val UNDERLINE_INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_3", INDEX_3)
