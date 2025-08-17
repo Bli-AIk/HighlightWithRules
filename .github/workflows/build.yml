@@ -1,13 +1,11 @@
-name: Build & Release IntelliJ Plugin
+name: Build & Release IntelliJ Plugin (ensure ZIP uploaded)
 
-# 可以手动触发或 push 到 main（你也可以改成其他分支）
 on:
   workflow_dispatch:
   push:
     branches:
       - main
 
-# 需要写入 repo contents（创建 release / 上传资产 / push tag）
 permissions:
   contents: write
 
@@ -17,10 +15,13 @@ jobs:
     env:
       REPO: ${{ github.repository }}
     steps:
-      - name: Checkout repository (full history for tags)
+      - name: Checkout repository (full history)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -34,16 +35,13 @@ jobs:
       - name: Resolve version from Gradle
         id: get_version
         run: |
-          # Try gradle properties output (works for Kotlin/Groovy builds if 'version' is set)
           VERSION_RAW=$(./gradlew properties -q | grep "^version:" | awk '{print $2}' || true)
-          # fallback: try reading gradle.properties or build.gradle(.kts) (simple heuristics)
           if [ -z "$VERSION_RAW" ]; then
             if [ -f gradle.properties ]; then
               VERSION_RAW=$(grep "^version" gradle.properties | head -n1 | cut -d'=' -f2 | tr -d '[:space:]')
             fi
           fi
           if [ -z "$VERSION_RAW" ]; then
-            # try common pattern in build.gradle(.kts)
             VERSION_RAW=$(grep -E "version\\s*=\\s*['\"]?[0-9]+\\.[0-9]+\\.[0-9]+" -m1 build.gradle* 2>/dev/null | sed -E "s/.*version\\s*=\\s*['\"]?([^'\" ]+)['\"]?.*/\\1/")
           fi
           if [ -z "$VERSION_RAW" ]; then
@@ -54,51 +52,62 @@ jobs:
           echo "Detected version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Build plugin (Gradle)
-        run: ./gradlew clean buildPlugin
+      - name: Build plugin (Gradle buildPlugin)
+        run: ./gradlew --no-daemon clean buildPlugin
+
+      - name: Show distributions directory (for debugging)
+        run: |
+          echo "Listing build/distributions:"
+          ls -la build/distributions || true
+
+      - name: Find plugin ZIP artifact
+        id: find_artifact
+        run: |
+          ART=$(ls build/distributions/*.zip 2>/dev/null | head -n1 || true)
+          if [ -z "$ART" ]; then
+            echo "No plugin ZIP found under build/distributions. Build probably failed or output path is different."
+            echo "Contents of build/:"
+            ls -la build || true
+            exit 1
+          fi
+          echo "Found artifact: $ART"
+          # GitHub outputs must be written to GITHUB_OUTPUT
+          echo "artifact=$ART" >> $GITHUB_OUTPUT
 
       - name: Determine tag name
         id: tag
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
-          # normalize tag with leading v
           if [[ "$VERSION" == v* ]]; then
             TAG="$VERSION"
           else
             TAG="v$VERSION"
           fi
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "TAG=$TAG"
 
       - name: Ensure tag exists (create & push if missing)
         id: ensure_tag
         run: |
           TAG=${{ steps.tag.outputs.tag }}
-          echo "Checking remote for tag $TAG ..."
           if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
-            echo "Tag $TAG already exists on remote. Skipping tag creation."
             echo "created=false" >> $GITHUB_OUTPUT
           else
-            echo "Tag $TAG does not exist. Creating and pushing..."
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag -a "$TAG" -m "Release $TAG"
-            # push tag using repository token credentials (actions/checkout configured credentials by default)
             git push origin "$TAG"
             echo "created=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create or update GitHub Release and upload plugin ZIP
-        uses: ncipollo/release-action@v1
+      - name: Create GitHub Release and upload plugin ZIP
+        uses: softprops/action-gh-release@v2
         with:
-          tag: ${{ steps.tag.outputs.tag }}
+          tag_name: ${{ steps.tag.outputs.tag }}
           name: Release ${{ steps.tag.outputs.tag }}
-          files: build/distributions/*.zip
+          files: ${{ steps.find_artifact.outputs.artifact }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Output result
+      - name: Done
         run: |
-          TAG=${{ steps.tag.outputs.tag }}
-          CREATED=${{ steps.ensure_tag.outputs.created }}
-          echo "Release workflow finished for $TAG (tag_created=$CREATED)."
+          echo "Release created/updated for ${{ steps.tag.outputs.tag }}; uploaded ${{ steps.find_artifact.outputs.artifact }}"
