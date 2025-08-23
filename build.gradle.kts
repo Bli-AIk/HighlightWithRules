@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.bliaik.highlightwithrules"
-version = "1.0-SNAPSHOT"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -23,6 +23,7 @@ dependencies {
 
         // Add necessary plugin dependencies for compilation here, example:
         bundledPlugin("com.intellij.modules.json")
+        bundledPlugin("org.jetbrains.plugins.yaml")
     }
 }
 

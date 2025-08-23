@@ -9,10 +9,22 @@ object ColorKeys {
         DefaultLanguageHighlighterColors.NUMBER
     )
 
-    val INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_1", DefaultLanguageHighlighterColors.KEYWORD)
-    val INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_2",  DefaultLanguageHighlighterColors.STRING)
-    val INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_3", DefaultLanguageHighlighterColors.LABEL)
-    val UNDERLINE_INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_1", INDEX_1)
-    val UNDERLINE_INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_2", INDEX_2)
-    val UNDERLINE_INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_3", INDEX_3)
+    val JSON_INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_1", DefaultLanguageHighlighterColors.KEYWORD)
+    val JSON_INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_2",  DefaultLanguageHighlighterColors.NUMBER)
+    val JSON_INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.INDEX_3", DefaultLanguageHighlighterColors.LABEL)
+    val JSON_UNDERLINE_INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_1", JSON_INDEX_1)
+    val JSON_UNDERLINE_INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_2", JSON_INDEX_2)
+    val JSON_UNDERLINE_INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.JSON.UNDERLINE_INDEX_3", JSON_INDEX_3)
+
+    val YAML_INDEX = TextAttributesKey.createTextAttributesKey(
+        "HWR.YAML.INDEX",
+        DefaultLanguageHighlighterColors.NUMBER
+    )
+
+    val YAML_INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.YAML.INDEX_1", JSON_INDEX_1)
+    val YAML_INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.YAML.INDEX_2", JSON_INDEX_2)
+    val YAML_INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.YAML.INDEX_3", JSON_INDEX_3)
+    val YAML_UNDERLINE_INDEX_1 = TextAttributesKey.createTextAttributesKey("HWR.YAML.UNDERLINE_INDEX_1", JSON_UNDERLINE_INDEX_1)
+    val YAML_UNDERLINE_INDEX_2 = TextAttributesKey.createTextAttributesKey("HWR.YAML.UNDERLINE_INDEX_2", JSON_UNDERLINE_INDEX_2)
+    val YAML_UNDERLINE_INDEX_3 = TextAttributesKey.createTextAttributesKey("HWR.YAML.UNDERLINE_INDEX_3", JSON_UNDERLINE_INDEX_3)
 }

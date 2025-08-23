@@ -27,12 +27,17 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.json</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <annotator language="JSON" implementationClass="com.bliaik.highlightwithrules.JsonAnnotator"/>
-        <colorSettingsPage implementation="com.bliaik.highlightwithrules.colors.HWRColorSettingsPage"/>
+        <colorSettingsPage implementation="com.bliaik.highlightwithrules.colors.JsonColorSettingsPage"/>
+
+        <annotator language="yaml" implementationClass="com.bliaik.highlightwithrules.YAMLAnnotator"/>
+        <colorSettingsPage implementation="com.bliaik.highlightwithrules.colors.YAMLColorSettingsPage"/>
+
         <additionalTextAttributes scheme="Default" file="colors/Scheme.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colors/Scheme.xml"/>
     </extensions>
